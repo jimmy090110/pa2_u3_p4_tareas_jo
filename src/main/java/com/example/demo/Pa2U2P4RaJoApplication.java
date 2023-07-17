@@ -1,30 +1,33 @@
 package com.example.demo;
 
-import java.util.HashSet;
-import java.util.Set;
+
+import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.example.demo.repository.modelo.Autor;
-import com.example.demo.repository.modelo.Libro;
-import com.example.demo.service.AutorService;
-import com.example.demo.service.EmpleadoService;
+import com.example.demo.repository.modelo.CuentaBancaria;
+import com.example.demo.repository.modelo.Propietario;
+import com.example.demo.service.ICuentaBancariaService;
+import com.example.demo.service.IPropietarioService;
+import com.example.demo.service.ITransferenciaService;
 
 
 
 
 @SpringBootApplication
 public class Pa2U2P4RaJoApplication implements CommandLineRunner {
+
+	@Autowired
+	private IPropietarioService propietarioService;
 	
 	@Autowired
-	private EmpleadoService empleadoService;
+	private ITransferenciaService transferenciaService;
 	
 	@Autowired
-	private AutorService autorService;
-	
+	private ICuentaBancariaService cuentaBancariaService;
 
 	
 	public static void main(String[] args) {
@@ -34,52 +37,48 @@ public class Pa2U2P4RaJoApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
+		//1.Cuenta Bancaria
+		Propietario prop= new Propietario();
+		prop.setNombre("Jimmy");
+		prop.setApellido("Ortega");
+		prop.setCedula("010");
+		this.propietarioService.ingresar(prop);
 		
-//		//Ciudadano-Empleado
-		System.out.println("-INNER JOIN-");
-		this.empleadoService.buscarInnerJoin().stream().forEach(System.out::println);
+		Propietario prop2= new Propietario();
+		prop2.setNombre("Fabricio");
+		prop2.setApellido("Salinas");
+		prop2.setCedula("020");
+		this.propietarioService.ingresar(prop2);
 		
-		System.out.println("-OUTER RIGHT JOIN-");
-		this.empleadoService.buscarOuterRighyJoin().stream().forEach(System.out::println);
+		Propietario propD = this.propietarioService.buscarCedula("020");
 		
-		System.out.println("-OUTER LEFT JOIN-");
-		this.empleadoService.buscarOuterLeftJoin().stream().forEach(System.out::println);
+		CuentaBancaria cuent = new CuentaBancaria();
+		cuent.setNumero("111");
+		cuent.setTipo("C");
+		cuent.setSaldo(new BigDecimal(1000));
+		cuent.setPropietario(propD);
 		
-		System.out.println("-OUTER FULL JOIN-");
-		this.empleadoService.buscarOuterFullJoin().stream().forEach(System.out::println);
+		this.cuentaBancariaService.ingresar(cuent);
 		
-		System.out.println("-WHERE JOIN-");
-		this.empleadoService.buscarWhereJoin().stream().forEach(System.out::println);
+		CuentaBancaria cuent2 = new CuentaBancaria();
+		cuent2.setNumero("222");
+		cuent2.setPropietario(propD);
+		cuent2.setTipo("A");
+		cuent2.setSaldo(new BigDecimal(2000));
 		
+		this.cuentaBancariaService.ingresar(cuent2);
 		
-		//Libro_Autor
-		System.out.println("-INNER JOIN-");
-		this.autorService.buscarInnerJoin().stream().forEach(System.out::println);
+		this.transferenciaService.realizarTransferencia("111", "222", new BigDecimal(500));
 		
-		System.out.println("-OUTER RIGHT JOIN-");
-		this.autorService.buscarOuterRighyJoin().stream().forEach(System.out::println);
+		this.transferenciaService.buscarTodos().stream().forEach(System.out::println);
 		
-		System.out.println("-OUTER LEFT JOIN-");
-		this.autorService.buscarOuterLeftJoin().stream().forEach(System.out::println);
-		
-		System.out.println("-OUTER FULL JOIN-");
-		this.autorService.buscarOuterFullJoin().stream().forEach(System.out::println);
-		
-		System.out.println("-WHERE JOIN-");
-		this.autorService.buscarWhereJoin().stream().forEach(System.out::println);
 		
 		
 		
 		
 		
 	
-		
-
-		
-		
-		
-
-		
+	
 	
 		
 	
