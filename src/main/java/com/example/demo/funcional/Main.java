@@ -171,24 +171,96 @@ public class Main {
 			return num;
 					});
 		listaCambiada2.forEach(cadena -> LOG.info(cadena.toString()));
+	
+		
 		
 		//metodos referenciados 
-		//1. supllier
-		
-		highOrder.metodo(metodos::getIdHO);
-		//2.Consumer
-		highOrder.metodoConsumer(metodos::aceptar, "Metodo Consumer");
-		//3.Predicate
-		highOrder.metodoPred(metodos::evaluar,8);
-		//4.Function
-		highOrder.metodoFunc(metodos::aplicar, 7);
-		//5.UnaryOperator
+				//1. supllier
+				
+				// 1. Clase
+				IPersonaSupplier<String> supplierHO2 = new PersonaSupplierImpl();
+				highOrder.metodo(supplierHO2);
+
+				// 2. Lambdas
+				highOrder.metodo(() -> "1234HO");
+				//3.Referenciados
+				highOrder.metodo(metodos::getIdHO);
+				
+				
+				//2.Consumer
+				// 1. Clase
+				LOG.info("Consumer Clase");
+				IPersonaConsumer<String> consumerHO2 = new PersonaConsumerImpl();
+				highOrder.metodoConsumer(consumerHO2, "Clase consumer");
+				// 2. Lambdas
+				LOG.info("Consummer Lambdas");
+				highOrder.metodoConsumer(cadena -> LOG.info(cadena), "Lambdas Consumer");
+				//3.Referenciados
+				LOG.info("Consumer Referenciados");
+				highOrder.metodoConsumer(metodos::aceptar, "Metodos referenciados Consumer");
+				
+				
+				//3.Predicate
+				//1.Clases
+				LOG.info("Predicate Clases");
+				IPersonaPredicate<Integer>predicate= new IPersonaPredicate<Integer>() {
+					
+					@Override
+					public boolean evaluar(Integer arg) {
+						// TODO Auto-generated method stub
+						return false;
+					}
+				};
+				highOrder.metodoPred(predicate, 7);
+				//2.Lambdas
+				LOG.info("Lambdas Predicate");
+				Integer x=6;
+				highOrder.metodoPred(n -> n.compareTo(x)==0 , x);
+				//3.Referenciados
+				LOG.info("Refrenciados Predicate");
+				highOrder.metodoPred(metodos::evaluar,6);
+				
+				
+				//4.Function
+				LOG.info("Clases Function");
+				IPersonaFunction<String, Integer>function3= new IPersonaFunction<String, Integer>() {
+					
+					@Override
+					public String aplicar(Integer arg) {
+						// TODO Auto-generated method stub
+						return null;
+					}
+				};
+				highOrder.metodoFunc(function3, 2);
+				LOG.info("Lambdas Function");
+				highOrder.metodoFunc(val -> val.toString().concat(" Lambda") , x);
+				LOG.info("Referenciados Function");
+				highOrder.metodoFunc(MetodosReferenciados::aplicar, 6);
+				
+				
+				//5.UnaryOperator
+				
+				LOG.info("Clases Unary Operator");
+				IPersonaUnaryOperator<Double>unary4= new IPersonaUnaryOperator<Double>() {
+					
+					@Override
+					public Double aplicar(Double arg) {
+						// TODO Auto-generated method stub
+						return null;
+					}
+				};;
+				highOrder.metodoUnary(unary4, 8.6);
+				
+				LOG.info("Lambdas Unary Operator");
+				Double y=8.6;
+				highOrder.metodoUnary(dou->y*0.3, y);
+				
+				LOG.info("Refeernciados Unary Operator");
+				highOrder.metodoUnary(MetodosReferenciados::aplicar, 8.6);
+			}
+
+	}	
 	
-		highOrder.metodoUnary(metodos::aplicar, 5.6);
-	}
-		
-		
-	}
 	
 	
 
